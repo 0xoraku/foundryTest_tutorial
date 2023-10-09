@@ -1,5 +1,5 @@
 ## Foundry Test
-(Smart Contract Programmerのtutorial)[https://www.youtube.com/watch?v=tgs5q-GJmg4&list=PLO5VPQH6OWdUrKEWPF07CSuVm3T99DQki]
+[Smart Contract Programmerのtutorial](https://www.youtube.com/watch?v=tgs5q-GJmg4&list=PLO5VPQH6OWdUrKEWPF07CSuVm3T99DQki)
 
 ## CLI
 ### 特定のファイルだけテストする

@@ -7,3 +7,7 @@
 forge test --match-path test/HelloWorld.t.sol
 ```
 
+### gas使用量を表示する
+```bash
+forge test --match-path test/Counter2.t.sol --gas-report
+```

@@ -18,3 +18,28 @@ forge test --match-path test/Counter2.t.sol --gas-report
 ```bash
 solc_version = "0.8.17"
 ```
+
+### 他のgithub等のlibraryを使う場合
+remappingsを使う
+
+#### CLIの場合
+```bash
+forge remappings
+```
+```bash
+結果の例
+ds-test/=lib/solmate/lib/ds-test/src/
+forge-std/=lib/forge-std/src/
+solmate/=lib/solmate/src/
+```
+
+#### 削除する場合
+```bash
+forge remove -f lib/solmate
+```
+
+
+### formatの設定
+```bash
+forge fmt
+```

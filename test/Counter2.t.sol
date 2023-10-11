@@ -4,12 +4,18 @@ pragma solidity ^0.8.13;
 import {Test, console2} from "forge-std/Test.sol";
 import {Counter2} from "../src/Counter2.sol";
 
-
 contract Counter2Test is Test {
     Counter2 public counter;
 
     function setUp() public {
         counter = new Counter2();
+    }
+
+    function testLogPrint() public {
+        console2.log("testLogPrint");
+        int x = -1;
+        console2.log(x);
+        console2.logInt(x);
     }
 
     function testInc() public {
@@ -34,5 +40,4 @@ contract Counter2Test is Test {
         counter.dec();
         assertEq(counter.count(), 1);
     }
-   
 }

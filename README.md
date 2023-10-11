@@ -11,3 +11,10 @@ forge test --match-path test/HelloWorld.t.sol
 ```bash
 forge test --match-path test/Counter2.t.sol --gas-report
 ```
+
+
+## foundry.tomlの設定
+### 特定のversionでcompileしたい場合
+```bash
+solc_version = "0.8.17"
+```

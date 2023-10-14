@@ -43,3 +43,13 @@ forge remove -f lib/solmate
 ```bash
 forge fmt
 ```
+
+## testの実行者のアドレスを変更する
+```bash
+# 次の行の実行者アドレスを変更する
+vm.prank()
+
+# stopまで実行者のアドレスを変更する
+vm.startPrank();
+vm.stopPrank();
+```

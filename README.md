@@ -53,3 +53,51 @@ vm.prank()
 vm.startPrank();
 vm.stopPrank();
 ```
+
+## Errorをテストする
+### 一般的な書き方
+```bash
+vm.expectRevert();
+#ここに該当する式などを書く
+``` 
+
+### requireのerror文をチェックしたい場合
+```bash
+vm.expectRevert(bytes("error message"));
+#ここに該当式
+```
+### errorやrevertで設定するカスタムエラーをチェックしたい場合
+```bash
+# error NotAuthorized();の場合
+vm.expectRevert(Error.NotAuthorized.selector);
+#ここに該当式
+```
+### assertにlabelをつけて、-vvvなどでlogを追いたい場合
+```bash
+# 通常のassert
+assertEq(uint256(1), uint256(1));
+# labelをつけたassert
+assertEq(uint256(1), uint256(1), "test 1");
+```
+
+## Eventのテスト
+
+### vm.expectEmit()の構成は次の通り
+```solidity
+   function expectEmit(
+             bool checkTopic1,
+             bool checkTopic2,
+             bool checkTopic3,
+             bool checkData
+    ) external;
+```
+#### 例
+```solidity
+        // 1. どのデータをチェックするかを指定する
+        // 例）index 1, index 2 そして dataをチェックする場合
+        vm.expectEmit(true, true, false, true);
+        // 2. Emitで期待されるイベントを発生させる
+        emit Transfer(address(this), address(123), 456);
+        // 3. イベントを発生させる関数を呼び出す
+        e.transfer(address(this), address(123), 456);
+```

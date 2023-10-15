@@ -101,3 +101,25 @@ assertEq(uint256(1), uint256(1), "test 1");
         // 3. イベントを発生させる関数を呼び出す
         e.transfer(address(this), address(123), 456);
 ```
+
+## 時間に関するテスト
+
+### 用語
+```bash
+    # set block.timestamp to future timestamp
+    # 引数にblock.timestamp + 1 hour　等を指定する
+    vm.warp()
+
+    # set block.number
+    # 引数値にblock.numberを指定する
+    # vm.roll(100)ならblock.numberを100にする
+    vm.roll()
+
+    # increment current timestamp
+    # 引数秒分だけ進めるskip(10)なら10秒進める
+    skip()
+
+    # decrement current timestamp
+    # 引数秒分だけ戻すrewind(10)なら10秒戻す
+    rewind()
+```

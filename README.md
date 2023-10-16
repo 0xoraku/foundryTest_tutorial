@@ -123,3 +123,15 @@ assertEq(uint256(1), uint256(1), "test 1");
     # 引数秒分だけ戻すrewind(10)なら10秒戻す
     rewind()
 ```
+
+## send Eth(Recieve関数)のテスト
+### 用語
+```bash
+# addressにbalanceを設定する
+deal(address, uint)
+
+# deal + prank
+# addressにbalanceを設定し、それの実行者とする
+hoax(address, uint)
+
+```

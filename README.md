@@ -162,7 +162,7 @@ ecrecoverは、EthereumのSolidityプログラミング言語に組み込まれ�
     //秘密鍵とハッシュ化されたメッセージを署名
     (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKey, messageHash);
     
-    //eccrecoverは、署名されたメッセージから公開鍵を復元する。
+    //ecrecoverは、署名されたメッセージから公開鍵を復元する。
     address signer = ecrecover(messageHash, v, r, s);
 ```
 

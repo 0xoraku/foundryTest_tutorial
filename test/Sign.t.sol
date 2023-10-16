@@ -42,7 +42,7 @@ contract SignTest is Test {
         bytes32 messageHash = keccak256("secret message");
         //秘密鍵とハッシュ化されたメッセージを署名
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKey, messageHash);
-        
+
         //ecrecoverは、署名されたメッセージから公開鍵を復元する。
         address signer = ecrecover(messageHash, v, r, s);
 
@@ -55,10 +55,7 @@ contract SignTest is Test {
         signer = ecrecover(invalidHash, v, r, s);
         //復元できないので、pubKeyとは異なる
         assertTrue(signer != pubKey);
-
     }
-
-
 
     // function testSignature() public {
     //     uint256 privateKey = 123;

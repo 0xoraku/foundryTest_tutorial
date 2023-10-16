@@ -41,8 +41,8 @@ contract WalletAuthTest is Test {
     }
 
     /**
-     vm.prankは次の行のみ。
-     vm.startPrankはstopがかかるまで引数のアドレスをmsg.senderとして扱う。
+     * vm.prankは次の行のみ。
+     *  vm.startPrankはstopがかかるまで引数のアドレスをmsg.senderとして扱う。
      */
     function testFailSetOwnerAgain() public {
         // vm.startPrank(user);
@@ -59,8 +59,6 @@ contract WalletAuthTest is Test {
         //従って、下はエラーになる。
         wallet.setOwner(address(1));
     }
-
-
 
     // Wallet public wallet;
 

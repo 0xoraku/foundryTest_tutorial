@@ -13,7 +13,7 @@ contract Counter2Test is Test {
 
     function testLogPrint() public {
         console2.log("testLogPrint");
-        int x = -1;
+        int256 x = -1;
         console2.log(x);
         console2.logInt(x);
     }

@@ -197,6 +197,8 @@ boundは、fuzzの範囲を指定する。
 bound(input, min, max)のように指定する。
 ```solidity
 x = bound(x, 1, 10);
+assertGe(x, 1);
+assertLe(x, 10);
 ```
 
 #### stats
@@ -207,3 +209,114 @@ fuzz testをすると、コンソールの出力に次のような(runs, μ, ~)�
 # μ: 10837は、gas使用量の平均値を示す。
 # ~: 10966は、gas使用量の中間値を示す。
 ```
+
+## Invariant(不変) Testing
+### fuzzとinvariantとの違い
+fuzzingは、ランダムな入力を単一の関数に渡して複数回テストを実行する。
+invariantは、一連の関数をランダムに呼び出し、複数回テストを実行する。
+
+#### Failing invariant例
+```solidity
+contract IntroInvariant {
+    bool public flag;
+
+    function func_1() external{}
+    //...
+    function func_5() external{
+        flag = true;
+    }
+}
+
+contract IntroInvariantTest is Test{
+    //IntroInvariantコントラクトをtargetとして呼び出し
+    //...
+    function invariant_flag_is_always_false() public {
+        //ここでflagがfalseであることを確認するために
+        //target.func_1()～target.func_5()をランダムに呼び出す
+        assertEq(target.flag(), false);
+    }
+}
+```
+
+#### passing invariant例
+```solidity
+contract WETH {
+    /*
+    ethをwrappingするコントラクトで、
+    depositやwithdraw,approve,transfer等を行う関数がある
+    */
+}
+
+contract contract WETH_Open_Invariant_Tests{
+    //setup
+    //...
+
+    function invariant_totalSupply_is_always_zero() public {
+        //ここでwethのtotalSupplyが複数の関数を実行した後も
+        //0であることを確認
+        assertEq(weth.totalSupply(), 0);
+    }
+}
+```
+結果
+```bash
+invariant_totalSupply_is_always_zero() (runs: 256, calls: 3840, reverts: 2226)
+# runs: 256は、256回テストを実行したことを示す。
+# calls: 3840は、3840回関数を呼び出したことを示す。
+# reverts: 2226は、2226回revertしたことを示す。
+# ここでrevert回数が多いのは、例えばwithdrawのamountが
+# balanceより多い場合などにrevertするため。
+```
+
+## Handler Based Testing
+Handler based testing: 特定の条件下でコントラクトをテストすること。
+passing invariantでは例えばdeposit関数を実行してもvalueは0のままだった。
+ここで、msg.valueに1を設定してdeposit関数を実行した場合に、valueが1になるかもテストしたい場合等に使う。
+
+### Handler based testingの構成
+WETH contract <- Handler contract <- Test contract
+という形にする。
+Handler contractは、WETH contractの関数を呼び出す関数を持つ。
+この時、各関数でmsg.value等の範囲をboundで設定することで、
+特定の値を入力した際の関数をテストできる。
+最後に、Test contractでHandler contractの関数を呼び出す。
+この際、以下のようにすることでweth,handler双方をテスト
+するのではなく、target contractのみのinvariant testが可能となる。
+
+```solidity
+targetContract(address(handler));
+```
+更に、target selectorを指定することで、特定の関数のみをテストすることも可能となる。
+```solidity
+// target selectorを指定しておく。
+//selectors[0] = Handler.deposit.selector;等
+targetSelector(
+            FuzzSelector({
+                addr: address(handler),
+                selectors: selectors
+            })
+        );
+```
+
+### 複数のhandlerを呼び出す-Actor management
+Actor management contract: 上記のHandlerをランダムに呼び出す
+WETH contract <- Handler contract <- Actor management contract <- Test contract
+
+ Actor management contract
+```solidity
+    Handler[] public handlers;
+
+    constructor(Handler[] memory _handlers) {
+        handlers = _handlers;
+    }
+
+    //handlerIndexは、handlersからランダムに選択される
+    function sendToFallback(uint handlerIndex, uint amount) public{...}
+    //...他の関数も同じようにhandlerIndexを設定する
+```
+test
+1. Actor management contractで設定した分のhandlerを呼び出す(handlersに格納する)
+2. Actor management contractを初期化。この際、引数に1.で設定したhandlerを渡す
+3. targetContract()に２．で作成したものを渡す
+4. testではhandlers格納数分を呼び出す関数を複数呼び出す。
+

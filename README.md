@@ -170,7 +170,40 @@ ecrecoverは、EthereumのSolidityプログラミング言語に組み込まれ�
 [gas-less token transfer自体の解説動画](https://www.youtube.com/watch?v=rucZrL1nOO8)
 
 
+## Fuzz Testing
 
+FuzzingはSolidity コントラクトのランダムなテスト入力を生成します。
 
+### fuzz
+test関数名()の引数を指定すると、その引数に対してランダムな値を入れてテストを実行する。
+```solidity
+// この場合は(uint256 x)
+function testMostSignificantBitFuzz(uint256 x) public {
+    ...
+}
+```
 
+### assume and bound
+#### assume
+assumeとは、boolを引数に取り、falseだった場合は現在のfuzzテストをスキップし、次の新たなfuzzテストを実行する。
+xが0以下の場合はスキップしたいケース
+```solidity
+vm.assume(x > 0);
+assertGt(x, 0);
+```
 
+#### bound
+boundは、fuzzの範囲を指定する。
+bound(input, min, max)のように指定する。
+```solidity
+x = bound(x, 1, 10);
+```
+
+#### stats
+fuzz testをすると、コンソールの出力に次のような(runs, μ, ~)が表示される。
+```bash
+テストした関数名  (runs: 256, μ: 10837, ~: 10966)
+# runs: 256は、256回テストを実行したことを示す。
+# μ: 10837は、gas使用量の平均値を示す。
+# ~: 10966は、gas使用量の中間値を示す。
+```

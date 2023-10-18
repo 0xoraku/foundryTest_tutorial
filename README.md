@@ -320,3 +320,24 @@ test
 3. targetContract()に２．で作成したものを渡す
 4. testではhandlers格納数分を呼び出す関数を複数呼び出す。
 
+
+## FFI(foreign function interface)
+Linuxコマンド等、テスト内から他のプログラムを実行すること
+```solidity
+//可変長配列を用意。
+//１つ目にコンテンツ、２つ目にファイル名を指定する。
+//以下の引数に渡してあげる
+vm.ffi(String配列)
+//返り値はbytes型
+```
+forge testする際は、--ffiオプションをつける
+```bash
+forge test --match-path test/FFI.t.sol --ffi -vvv
+
+# 結果
+Logs:
+  Hello
+Foundry
+```
+
+

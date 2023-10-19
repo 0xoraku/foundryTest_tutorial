@@ -19,17 +19,19 @@ import "forge-std/console.sol";
 contract IntroInvariant {
     bool public flag;
 
-    function func_1() external{}
-    function func_2() external{}
-    function func_3() external{}
-    function func_4() external{}
-    function func_5() external{
+    function func_1() external {}
+    function func_2() external {}
+    function func_3() external {}
+    function func_4() external {}
+
+    function func_5() external {
         flag = true;
     }
 }
 
-contract IntroInvariantTest is Test{
+contract IntroInvariantTest is Test {
     IntroInvariant private target;
+
     function setUp() public {
         target = new IntroInvariant();
     }

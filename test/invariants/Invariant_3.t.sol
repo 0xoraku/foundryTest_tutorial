@@ -21,18 +21,18 @@ contract ActorManager is CommonBase, StdCheats, StdUtils {
     }
 
     //handlerIndexは、handlersからランダムに選択される
-    function sendToFallback(uint handlerIndex, uint amount) public {
-        uint index = bound(handlerIndex, 0, handlers.length - 1);
+    function sendToFallback(uint256 handlerIndex, uint256 amount) public {
+        uint256 index = bound(handlerIndex, 0, handlers.length - 1);
         handlers[index].sendToFallback(amount);
     }
 
-    function deposit(uint handlerIndex, uint amount) public {
-        uint index = bound(handlerIndex, 0, handlers.length - 1);
+    function deposit(uint256 handlerIndex, uint256 amount) public {
+        uint256 index = bound(handlerIndex, 0, handlers.length - 1);
         handlers[index].deposit(amount);
     }
 
-    function withdraw(uint handlerIndex, uint amount) public {
-        uint index = bound(handlerIndex, 0, handlers.length - 1);
+    function withdraw(uint256 handlerIndex, uint256 amount) public {
+        uint256 index = bound(handlerIndex, 0, handlers.length - 1);
         handlers[index].withdraw(amount);
     }
 }
@@ -46,7 +46,7 @@ contract WETH_Multi_Handler_Invariant_Tests is Test {
         weth = new WETH();
 
         //今回は関数３つをテストしたい。
-        for(uint i = 0; i < 3; i++){
+        for (uint256 i = 0; i < 3; i++) {
             handlers.push(new Handler(weth));
             deal(address(handlers[i]), 100 * 1e18);
         }
@@ -58,8 +58,8 @@ contract WETH_Multi_Handler_Invariant_Tests is Test {
 
     //wethのbalanceが全てのhandlerのwethBalance以上であることを確認する
     function invariant_eth_balance() public {
-        uint total = 0;
-        for (uint i = 0; i < handlers.length ; i++) {
+        uint256 total = 0;
+        for (uint256 i = 0; i < handlers.length; i++) {
             total += handlers[i].wethBalance();
             //何回handlerを呼び出したか
             console.log("Handler num calls: ", i);

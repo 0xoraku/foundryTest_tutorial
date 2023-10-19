@@ -17,12 +17,12 @@ contract ForkTest is Test {
     }
 
     function testWeth() public {
-        uint balBefore = weth.balanceOf(address(this));
+        uint256 balBefore = weth.balanceOf(address(this));
         console.log("balBefore", balBefore);
 
         weth.deposit{value: 1 ether}();
-        
-        uint balAfter = weth.balanceOf(address(this));
+
+        uint256 balAfter = weth.balanceOf(address(this));
         console.log("balAfter", balAfter);
     }
 }

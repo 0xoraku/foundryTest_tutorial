@@ -4,18 +4,12 @@ pragma solidity ^0.8.18;
 contract Bit {
     // Find most significant bit using binary search
     /**
-    mostSignificantBit: 2進数で最上位ビットの１を探す
-    0x1100の場合、 左から3番目のビットが最上位ビットの１
-    該当のbitの位置は右から何番目かを返すのでこの場合は3を返す(0からカウント)
-    
-
+     * mostSignificantBit: 2進数で最上位ビットの１を探す
+     * 0x1100の場合、 左から3番目のビットが最上位ビットの１
+     * 該当のbitの位置は右から何番目かを返すのでこの場合は3を返す(0からカウント)
      */
-     
-    function mostSignificantBit(uint256 x)
-        external
-        pure
-        returns (uint256 msb)
-    {
+
+    function mostSignificantBit(uint256 x) external pure returns (uint256 msb) {
         // x >= 2 ** 128
         if (x >= 0x100000000000000000000000000000000) {
             x >>= 128;

@@ -353,3 +353,34 @@ ffiを利用して別のプログラムを使用してコードをテストす�
 ```
 
 
+## Deploy a contract
+deployするためのコードはscriptフォルダ下に作成する。
+ファイル名は<code>file名.s.sol</code>のようにする。
+
+### 基本の形
+forgeのScriptを継承し、以下のように書く。
+```solidity
+contract hogeScript is Script {
+    function setUp() public {}
+
+    function run() public {
+        vm.startBroadcast();
+    }
+}
+```
+ブロードキャストとは、Ethereumの仮想マシンであるEVMが
+実行するトランザクションを、Ethereumネットワーク上の
+すべてのノードに送信することを指す。
+<code>vm.startBroadcast()</code> 関数は、ブロードキャストモードを開始する。
+
+### その他
+.envファイルの環境変数を読み込む
+cli
+```bash
+source .env
+```
+solidityファイル内
+```solidity
+vm.envUint("PRIVATE_KEY");
+```
+

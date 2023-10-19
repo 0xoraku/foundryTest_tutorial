@@ -17,8 +17,8 @@ contract WETH_Open_Invariant_Tests is Test {
         weth = new WETH();
     }
 
-    //total supply of WETH is always zero. 
-    //Because the invariant test always called functions 
+    //total supply of WETH is always zero.
+    //Because the invariant test always called functions
     //inside WETH with 0 ETH (msg.amount = 0).
     function invariant_totalSupply_is_always_zero() public {
         assertEq(weth.totalSupply(), 0);

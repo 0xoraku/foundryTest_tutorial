@@ -12,12 +12,12 @@ contract FuzzTest is Test {
     }
 
     /**
-    この関数は、与えられた256ビットの整数の最上位ビットの位置を返すため
-    に使用されます。
-    関数は、与えられた整数を1ビットずつ右にシフトし、
-    0になるまで繰り返します。
-    このプロセスで、シフトされた回数が最上位ビットの位置になります。
-    最後に、この位置が返されます。
+     * この関数は、与えられた256ビットの整数の最上位ビットの位置を返すため
+     * に使用されます。
+     * 関数は、与えられた整数を1ビットずつ右にシフトし、
+     * 0になるまで繰り返します。
+     * このプロセスで、シフトされた回数が最上位ビットの位置になります。
+     * 最後に、この位置が返されます。
      */
     function mostSignificantBit(uint256 x) private pure returns (uint256) {
         uint256 i = 0;
@@ -28,12 +28,12 @@ contract FuzzTest is Test {
     }
 
     function testMostSignificantBitManual() public {
-        assertEq(b.mostSignificantBit(0),0);
-        assertEq(b.mostSignificantBit(1),0);
-        assertEq(b.mostSignificantBit(2),1);
-        assertEq(b.mostSignificantBit(4),2);
-        assertEq(b.mostSignificantBit(8),3);
-        assertEq(b.mostSignificantBit(type(uint256).max),255);
+        assertEq(b.mostSignificantBit(0), 0);
+        assertEq(b.mostSignificantBit(1), 0);
+        assertEq(b.mostSignificantBit(2), 1);
+        assertEq(b.mostSignificantBit(4), 2);
+        assertEq(b.mostSignificantBit(8), 3);
+        assertEq(b.mostSignificantBit(type(uint256).max), 255);
     }
 
     //上記で行ったinputをランダム値に変更して実行する
@@ -50,7 +50,7 @@ contract FuzzTest is Test {
         x = bound(x, 1, 10);
         // assertGe(x, 1);
         // assertLe(x, 10);
-        uint i = b.mostSignificantBit(x);
+        uint256 i = b.mostSignificantBit(x);
         assertEq(i, mostSignificantBit(x));
     }
 }

@@ -14,41 +14,39 @@ import {CommonBase} from "forge-std/Base.sol";
 import {StdCheats} from "forge-std/StdCheats.sol";
 import {StdUtils} from "forge-std/StdUtils.sol";
 
-
-
 contract Handler is CommonBase, StdCheats, StdUtils {
     WETH private weth;
     //Handler contractによって、wethのbalanceが
     //どの程度変化したかを記録する
-    uint public wethBalance;
+    uint256 public wethBalance;
 
     constructor(WETH _weth) {
         weth = _weth;
     }
 
-    receive() external payable{}
+    receive() external payable {}
 
     //WETHコントラクトのrecieve関数に送金する
     //これはreceive関数内でdeposit関数を呼び出しているため
-    function sendToFallback(uint amount) public {
+    function sendToFallback(uint256 amount) public {
         //このコントラクト(Handler)のbalanceの範囲内でランダム値を生成する(bound)
         amount = bound(amount, 0, address(this).balance);
-        
+
         wethBalance += amount;
 
         //fallbackの呼び出し
-        (bool ok, ) = address(weth).call{value: amount}("");
+        (bool ok,) = address(weth).call{value: amount}("");
         require(ok, "sendToFallback failed");
     }
 
-    function deposit(uint amount) public {
+    function deposit(uint256 amount) public {
         amount = bound(amount, 0, address(this).balance);
         wethBalance += amount;
         //ランダム値のamountを預ける
         weth.deposit{value: amount}();
     }
 
-    function withdraw(uint amount) public {
+    function withdraw(uint256 amount) public {
         //Handlerで初期化したWETHコントラクトのbalanceの範囲内に設定
         amount = bound(amount, 0, weth.balanceOf(address(this)));
         wethBalance -= amount;
@@ -83,12 +81,7 @@ contract WETH_Handler_Based_Invariant_Tests is Test {
         selectors[1] = Handler.withdraw.selector;
         selectors[2] = Handler.sendToFallback.selector;
         // targetSelector("sendToFallback(uint256)");
-        targetSelector(
-            FuzzSelector({
-                addr: address(handler),
-                selectors: selectors
-            })
-        );
+        targetSelector(FuzzSelector({addr: address(handler), selectors: selectors}));
     }
 
     //wethのbalanceがhandlerのwethBalance以上であることを確認する

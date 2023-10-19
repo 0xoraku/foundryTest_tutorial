@@ -340,4 +340,16 @@ Logs:
 Foundry
 ```
 
+## Differential Testing
+ffiを利用して別のプログラムを使用してコードをテストする
+#### 例）pythonコードを実行する
+```solidity
+    string[] memory inputs = new string[](3);
+    inputs[0] = "python";
+    inputs[1] = "exp.py";
+    inputs[2] = uint256(int256(x)).toString();
+
+    bytes memory res = vm.ffi(inputs);
+```
+
 
